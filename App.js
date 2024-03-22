@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, Alert, Text } from 'react-native';
 import UpiPayment from 'react-native-upi-payment';
+import OneUpi from 'one-react-native-upi'
 
 export default function App() {
   const [transactionId, setTransactionId] = useState(null);
@@ -26,6 +27,22 @@ export default function App() {
     }
   }
 
+  const config =  {
+    upiId: 'q750072143@ybl',
+    name: 'KATREDDY SATHYANARAYANA',
+    note: 'Test payment',
+    amount: '1',
+    targetPackage: "",
+    }
+   
+    const onSuccess = (data) => {
+        Alert.alert('Success', 'Payment Success ' + data.txnId);
+        setTransactionId(data.txnId);
+    }
+    const onFailure = (data) => {
+      Alert.alert('Failed', 'Payment Failed ' + data.txnId);
+    }
+
   const initiatePayment = async () => {
     try {
       const response = await UpiPayment.initializePayment({
@@ -46,8 +63,19 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 15 }}>
       <Button title="Initiate Payment" onPress={initiatePayment} />
+
+      <Button
+          title="Pay now"
+          onPress={() =>
+            OneUpi.initiate(
+              config,
+              onSuccess,
+              onFailure,
+            )
+          }
+        />
       {transactionId && <Text>Transaction ID: {transactionId}</Text>}
     </View>
   );

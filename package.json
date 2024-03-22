@@ -12,6 +12,7 @@
     "buildapk": "cd android && ./gradlew app:assembleRelease"
   },
   "dependencies": {
+    "one-react-native-upi": "^0.1.2",
     "react": "18.2.0",
     "react-native": "0.73.6"
   },
